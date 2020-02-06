@@ -6,23 +6,7 @@ import { withFormik } from 'formik';
 
 import styles from './index.module.css';
 class Login extends React.Component {
-	state = {
-		username: '',
-		password: ''
-	};
-	// 受控组件
-	handleChange = e => {
-		this.setState({
-			[e.target.name]: e.target.value
-		});
-	};
-	// 提交事件
-	handleSubmit = e => {
-		e.preventDefault();
-		const { username, password } = this.state;
-	};
 	render() {
-		const { username, password } = this.state;
 		// #5 通过 props 获取高阶组件提供的状态（属性和方法），handleChange 是高阶组件自带的，可以打印 this.props 查看
 		const { values, handleSubmit, handleChange } = this.props;
 		// #6 替换 state 中的 username 为 values.username，自身的 this.handleSubmit、this.handleChange 都替换成高阶组件提供的
