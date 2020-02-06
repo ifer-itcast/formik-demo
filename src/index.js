@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 
 import 'antd-mobile/dist/antd-mobile.css';
 
-import Login from './Login';
+import App from './App';
 
 ReactDOM.render(
-    <Login/>,
+    <App/>,
     document.querySelector('#root')
 );

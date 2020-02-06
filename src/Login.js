@@ -1,32 +1,40 @@
 import React from 'react';
 import { WingBlank } from 'antd-mobile';
+
+// #1 导入
+import { withFormik } from 'formik';
+
 import styles from './index.module.css';
-export default class Login extends React.Component {
+class Login extends React.Component {
 	state = {
 		username: '',
 		password: ''
-    };
-    // 受控组件
+	};
+	// 受控组件
 	handleChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value
 		});
-    };
-    // 提交事件
-    handleSubmit = e => {
-        e.preventDefault();
-    };
+	};
+	// 提交事件
+	handleSubmit = e => {
+		e.preventDefault();
+		const { username, password } = this.state;
+	};
 	render() {
 		const { username, password } = this.state;
+		// #5 通过 props 获取高阶组件提供的状态（属性和方法），handleChange 是高阶组件自带的，可以打印 this.props 查看
+		const { values, handleSubmit, handleChange } = this.props;
+		// #6 替换 state 中的 username 为 values.username，自身的 this.handleSubmit、this.handleChange 都替换成高阶组件提供的
 		return (
 			<WingBlank>
-				<form onSubmit={this.handleSubmit}>
+				<form onSubmit={handleSubmit}>
 					<div className={styles.formItem}>
 						<input
 							className={styles.input}
-							onChange={this.handleChange}
+							onChange={handleChange}
 							name="username"
-							value={username}
+							value={values.username}
 							placeholder="请输入账号"
 						/>
 					</div>
@@ -35,10 +43,10 @@ export default class Login extends React.Component {
 					<div className={styles.formItem}>
 						<input
 							className={styles.input}
-							onChange={this.handleChange}
+							onChange={handleChange}
 							name="password"
 							type="password"
-							value={password}
+							value={values.password}
 							placeholder="请输入密码"
 						/>
 					</div>
@@ -54,3 +62,18 @@ export default class Login extends React.Component {
 		);
 	}
 }
+
+// #2 withFormik 调用返回的是一个高阶组件，这种写法方便传值，然后再包装 Login，并为 Login 提供相关状态（属性和方法）
+Login = withFormik({
+	// #3 为组件提供状态
+	mapPropsToValues: () => ({ username: '', password: '' }),
+	// #4 表单的提交事件
+	handleSubmit: (values, { props }) => {
+		// 内部已经阻止了默认行为（跳转），props 中可以获取路由相关的信息
+		// #7 获取表单中的数据
+		const { username, password } = values;
+
+		console.log(username, password, props);
+	}
+})(Login);
+export default Login;
