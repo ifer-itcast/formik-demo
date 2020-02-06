@@ -2,7 +2,7 @@ import React from 'react';
 import { WingBlank } from 'antd-mobile';
 
 // #1 导入
-import { withFormik } from 'formik';
+import { withFormik, Form, Field, ErrorMessage } from 'formik';
 // #yup1 导入
 import * as Yup from 'yup';
 
@@ -14,56 +14,35 @@ const REG_PWD = /^[a-zA-Z_\d]{5,12}$/;
 class Login extends React.Component {
 	render() {
 		// #5 通过 props 获取高阶组件提供的状态（属性和方法），handleChange 是高阶组件自带的，可以打印 this.props 查看
-		const { values, handleSubmit, handleChange } = this.props;
+		// const { values, handleSubmit, handleChange } = this.props;
 		// #6 替换 state 中的 username 为 values.username，自身的 this.handleSubmit、this.handleChange 都替换成高阶组件提供的
 		// #yup3 接收错误提示信息和是否 touched 信息，touched 用于记录这个框是否被访问过（失去焦点肯定能证明访问过）
-		const { errors, touched, handleBlur } = this.props;
+		// const { errors, touched, handleBlur } = this.props;
 		// #yup4 想要获取到 touched 需要给表单元素添加 handleBlur 事件
 		return (
 			<WingBlank>
-				<form onSubmit={handleSubmit}>
+				<Form>
 					<div className={styles.formItem}>
-						<input
-							className={styles.input}
-							onChange={handleChange}
-							onBlur={handleBlur}
-							name="username"
-							value={values.username}
-							placeholder="请输入账号"
-						/>
+						<Field className={styles.input} name="username" placeholder="请输入账号" />
 					</div>
 					{/* 长度为5到8位，只能出现数字、字母、下划线 */}
 					{/* <div className={styles.error}>账号为必填项</div> */}
 					{/* #yup5 进行错误信息提示 */}
-					{errors.username &&
-						touched.username &&
-						<div className={styles.error}>
-							{errors.username}
-						</div>}
+					{/* {errors.username &&touched.username &&<div className={styles.error}>{errors.username}</div>} */}
+					<ErrorMessage className={styles.error} name="username" component="div" />
 					<div className={styles.formItem}>
-						<input
-							className={styles.input}
-							onChange={handleChange}
-							onBlur={handleBlur}
-							name="password"
-							type="password"
-							value={values.password}
-							placeholder="请输入密码"
-						/>
+						<Field className={styles.input} name="password" placeholder="请输入密码" />
 					</div>
 					{/* 长度为5到12位，只能出现数字、字母、下划线 */}
 					{/* <div className={styles.error}>账号为必填项</div> */}
-					{errors.password &&
-						touched.password &&
-						<div className={styles.error}>
-							{errors.password}
-						</div>}
+					{/* {errors.password &&touched.password &&<div className={styles.error}>{errors.password}</div>} */}
+					<ErrorMessage className={styles.error} name="password" component="div" />
 					<div className={styles.formSubmit}>
 						<button className={styles.submit} type="submit">
 							登 录
 						</button>
 					</div>
-				</form>
+				</Form>
 			</WingBlank>
 		);
 	}
